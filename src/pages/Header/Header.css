@@ -1,0 +1,26 @@
+/* src/components/Header.css */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #000; /* black header */
+    color: #fff;
+    padding: 1rem 2rem;
+  }
+  
+  .header-logo {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .header-nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 1.5rem;
+    font-weight: 500;
+  }
+  
+  .header-nav a:hover {
+    text-decoration: underline;
+  }
+  
