@@ -5,6 +5,8 @@ function TailorCVPage() {
   const [jobDescription, setJobDescription] = useState('');
   const [cvFile, setCvFile] = useState(null);
   const [optimizedReady, setOptimizedReady] = useState(false);
+  const [downloadUrl, setDownloadUrl] = useState('');
+  const API_BASE_URL = "https://localhost:7291"; 
 
   const handleJobDescriptionChange = (e) => {
     setJobDescription(e.target.value);
@@ -14,20 +16,46 @@ function TailorCVPage() {
     setCvFile(e.target.files[0]);
   };
 
-  const handleUploadAndTailor = () => {
-    // In a real app, you'd send jobDescription & cvFile to your backend
-    console.log('Job Description:', jobDescription);
-    console.log('CV File:', cvFile);
+  const handleUploadAndTailor = async () => {
+    if (!jobDescription || !cvFile) {
+      alert('Please provide both a job description and a CV file.');
+      return;
+    }
 
-    // Simulate a short delay for "processing"
-    setTimeout(() => {
-      setOptimizedReady(true);
-    }, 1000);
+    const formData = new FormData();
+    formData.append('File', cvFile);
+    formData.append('JobDesc', jobDescription);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/resume/tailor-job-and-cv`, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        // Create an object URL for the downloaded file
+        const url = URL.createObjectURL(blob);
+        setDownloadUrl(url);
+        setOptimizedReady(true);
+      } else {
+        console.error('Error tailoring resume:', response.statusText);
+        alert('Failed to tailor resume. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error uploading resume:', error);
+      alert('Failed to tailor resume. Please try again.');
+    }
   };
 
   const handleDownload = () => {
-    // Trigger a download of the processed CV
-    console.log('Downloading optimized CV...');
+    if (!downloadUrl) return;
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.download = 'Resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (

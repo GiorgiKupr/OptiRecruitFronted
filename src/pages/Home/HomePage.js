@@ -1,5 +1,6 @@
 // src/pages/HomePage.js
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './HomePage.css';
 
 function HomePage() {
@@ -27,7 +28,7 @@ function HomePage() {
           <div className="card-icon">✍️</div>
           <h3>Tailor CV</h3>
           <p>Customize your CV for specific job applications.</p>
-          <button>Tailor Now</button>
+          <Link to="/tailor-cv"><button>Tailor Now</button></Link>
         </div>
       </div>
     </div>
